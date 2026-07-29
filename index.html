@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aperture Lab · AI 智能修图</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 背景氛围光层 -->
+    <div class="ambient-light" aria-hidden="true">
+        <div class="light-blob blob-1"></div>
+        <div class="light-blob blob-2"></div>
+        <div class="light-blob blob-3"></div>
+    </div>
+    <div class="grain" aria-hidden="true"></div>
+
+    <!-- 顶部导航 -->
+    <header class="topbar">
+        <div class="topbar-inner">
+            <a class="brand" href="#">
+                <div class="brand-mark" aria-hidden="true">
+                    <svg viewBox="0 0 32 32" fill="none">
+                        <circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="1.2" opacity="0.5"/>
+                        <circle cx="16" cy="16" r="9" stroke="currentColor" stroke-width="1.2"/>
+                        <circle cx="16" cy="16" r="4" fill="currentColor"/>
+                        <path d="M16 2 L16 6 M16 26 L16 30 M2 16 L6 16 M26 16 L30 16" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-name">Aperture</span>
+                    <span class="brand-sub">Lab · AI 修图工作台</span>
+                </div>
+            </a>
+            <nav class="topnav">
+                <button class="topnav-link active" data-cat="enhance" type="button">画质修复</button>
+                <button class="topnav-link" data-cat="edit" type="button">画面编辑</button>
+                <button class="topnav-link" data-cat="color" type="button">氛围调色</button>
+                <button class="topnav-link" data-cat="fun" type="button">趣味社交</button>
+                <button class="topnav-icon" id="helpBtn" type="button" aria-label="使用说明">
+                    <svg viewBox="0 0 20 20" fill="none">
+                        <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.4"/>
+                        <path d="M8 8a2 2 0 1 1 2.5 1.94c-.5.2-.7.5-.7 1.06v.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                        <circle cx="9.8" cy="14" r="0.7" fill="currentColor"/>
+                    </svg>
+                </button>
+                <button class="topnav-user" id="loginBtn" type="button">
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="10" cy="6" r="4"/>
+                        <path d="M3 18c0-4 3-6 7-6s7 2 7 6"/>
+                    </svg>
+                    登录
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ========== 首页视图 ========== -->
+    <main class="page" id="homeView">
+        <!-- Hero 区 -->
+        <section class="hero">
+            <span class="eyebrow" data-reveal="100">
+                <span class="eyebrow-dot"></span>
+                AI Image Enhancement · v3
+            </span>
+            <h1 class="hero-title" data-reveal="180">
+                上传图片，描述需求，<em>拿到可继续修改的结果</em>
+            </h1>
+            <p class="hero-sub" data-reveal="280">
+                选择功能、上传图片、描述修改需求，AI 在 3 秒内完成画面润色、色彩重构与细节重建。
+            </p>
+        </section>
+
+        <!-- 功能卡片网格（按分类切换） -->
+        <section class="category-section" id="categorySection" data-reveal="350">
+            <!-- 画质修复 -->
+            <div class="cat-panel active" data-cat="enhance">
+                <div class="cat-header">
+                    <h2 class="cat-title">画质清晰度修复增强</h2>
+                    <p class="cat-desc">解决模糊、发灰、画质受损问题，让画面重获清晰</p>
+                </div>
+                <div class="feature-grid">
+                    <button class="feature-card" data-feature="enhance" data-style="hd" type="button">
+                        <div class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L14 8 L20 8 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 L10 8 Z"/></svg></div>
+                        <h3 class="fc-name">照片增强</h3>
+                        <p class="fc-desc">一键提升锐度与清晰度</p>
+                    </button>
+                    <button class="feature-card" data-feature="portrait" data-style="portrait" type="button">
+                        <div class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg></div>
+                        <h3 class="fc-name">人像增强</h3>
+                        <p class="fc-desc">智能磨皮与肤色提亮</p>
+                    </button>
+                    <button class="feature-card" data-feature="restore" data-style="hd" type="button">
+                        <div class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12c0-5 4-9 9-9s9 4 9 9-4 9-9 9"/><path d="M3 12l4-4M3 12l4 4"/><path d="M12 7v5l3 2"/></svg></div>
+                        <h3 class="fc-name">老照片修复</h3>
+                        <p class="fc-desc">泛黄褪色一键还原</p>
+                    </button>
+                    <button class="feature-card" data-feature="upscale" data-style="hd" type="button">
+                        <div class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6M4 4v6M20 20h-6M20 20v-6M4 20l16-16"/></svg></div>
+                        <h3 class="fc-name">无损放大</h3>
+                        <p class="fc-desc">放大不模糊，保留细节</p>
+                    </button>
+                    <button class="feature-card" data-feature="bright" data-style="landscape" type="button">
+                        <div class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/></svg></div>
+                        <h3 class="fc-name">亮度调整</h3>
+                        <p class="fc-desc">智能优化昏暗照片</p>
+                    </button>
+                    <button class="feature-card" data-feature="clear" data-style="hd" type="button">
+                        <div class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8" opacity="0.4"/><circle cx="12" cy="12" r="11" opacity="0.2"/></svg></div>
+                        <h3 class="fc-name">通透优化</h3>
+                        <p class="fc-desc">一键让照片干净透亮</p>
+                    </button>
+                    <button class="feature-card" data-feature="defect" data-style="hd" type="button">
+                        <div class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 12l9 4 9-4M3 17l9 4 9-4"/></svg></div>
+                        <h3 class="fc-name">瑕疵修复</h3>
+                        <p class="fc-desc">去除灰尘、划痕、水渍</p>
+                    </button>
+                    <button class="feature-card" data-feature="shopbright" data-style="landscape" type="button">
+                        <div class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18l-2 12H5L3 9z"/><path d="M8 9V5a4 4 0 018 0v4"/></svg></div>
+                        <h3 class="fc-name">商家提亮祛灰</h3>
+                        <p class="fc-desc">门店实拍图专属优化</p>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 画面编辑 -->
+            <div class="cat-panel" data-cat="edit">
+                <div class="cat-header">
+                    <h2 class="cat-title">画面元素编辑</h2>
+                    <p class="cat-desc">删除多余物体、更换背景，精准编辑画面内容</p>
+                </div>
+                <div class="feature-grid">
+                    <button class="feature-card" data-feature="remove" data-style="hd" type="button">
+                        <div class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg></div>
+                        <h3 class="fc-name">移除物体</h3>
+                        <p class="fc-desc">去除路人杂物，画面更干净</p>
+                    </button>
+                    <button class="feature-card" data-feature="cutout" data-style="hd" type="button">
+                        <div class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4L8.12 15.88M14.47 14.48L20 20M8.12 8.12L12 12"/></svg></div>
+                        <h3 class="fc-name">智能抠图</h3>
+                        <p class="fc-desc">AI 一键去除背景</p>
+                    </button>
+                    <button class="feature-card" data-feature="idphoto" data-style="hd" type="button">
+                        <div class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><circle cx="12" cy="10" r="3"/><path d="M7 19c0-3 2-5 5-5s5 2 5 5"/></svg></div>
+                        <h3 class="fc-name">证件照换底</h3>
+                        <p class="fc-desc">白/蓝/红三色一键切换</p>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 氛围调色 -->
+            <div class="cat-panel" data-cat="color">
+                <div class="cat-header">
+                    <h2 class="cat-title">氛围感调色美化</h2>
+                    <p class="cat-desc">改变色调与质感，打造专属风格氛围</p>
+                </div>
+                <div class="feature-grid">
+                    <button class="feature-card" data-feature="magnify" data-style="landscape" type="button">
+                        <div class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/></svg></div>
+                        <h3 class="fc-name">创意放大器</h3>
+                        <p class="fc-desc">商品质感升级，细节增强</p>
+                    </button>
+                    <button class="feature-card" data-feature="vibe" data-style="film" type="button">
+                        <div class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20M5 5l14 14M19 5L5 19"/></svg></div>
+                        <h3 class="fc-name">一键氛围调色</h3>
+                        <p class="fc-desc">胶片、清新、暖调、冷调</p>
+                    </button>
+                </div>
+                <!-- 预制模板栏 -->
+                <div class="template-bar">
+                    <div class="template-bar-header">
+                        <span class="tb-label">预制风格模板</span>
+                        <span class="tb-hint">点击应用预设效果</span>
+                    </div>
+                    <div class="template-list">
+                        <button class="template-item active" data-template="film" data-style="film" type="button">
+                            <div class="tpl-preview tpl-film"></div>
+                            <span class="tpl-name">胶片质感</span>
+                        </button>
+                        <button class="template-item" data-template="fresh" data-style="hd" type="button">
+                            <div class="tpl-preview tpl-fresh"></div>
+                            <span class="tpl-name">清新通透</span>
+                        </button>
+                        <button class="template-item" data-template="warm" data-style="portrait" type="button">
+                            <div class="tpl-preview tpl-warm"></div>
+                            <span class="tpl-name">暖调日常</span>
+                        </button>
+                        <button class="template-item" data-template="cool" data-style="landscape" type="button">
+                            <div class="tpl-preview tpl-cool"></div>
+                            <span class="tpl-name">冷调高级</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 趣味社交 -->
+            <div class="cat-panel" data-cat="fun">
+                <div class="cat-header">
+                    <h2 class="cat-title">趣味娱乐 & 社交排版</h2>
+                    <p class="cat-desc">满足社交发布与休闲玩乐，轻松出图</p>
+                </div>
+                <div class="feature-grid">
+                    <button class="feature-card" data-feature="cartoon" data-style="film" type="button">
+                        <div class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><circle cx="9" cy="9" r="1"/><circle cx="15" cy="9" r="1"/></svg></div>
+                        <h3 class="fc-name">照片卡通化</h3>
+                        <p class="fc-desc">一键生成趣味卡通风格</p>
+                    </button>
+                    <button class="feature-card" data-feature="collage" data-style="hd" type="button">
+                        <div class="fc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg></div>
+                        <h3 class="fc-name">创意拼接</h3>
+                        <p class="fc-desc">多图拼接，社交配图利器</p>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 上传工作台（左侧上传 + 右侧亮点） -->
+        <section class="workbench workbench-hero" id="workbench" data-reveal="400">
+            <!-- 左：上传区 -->
+            <div class="stage stage-upload" id="stageUpload">
+                <div class="stage-header">
+                    <h2 class="stage-title">上传原图</h2>
+                    <span class="stage-hint">JPG / PNG / WebP · ≤ 10MB</span>
+                </div>
+
+                <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="点击或拖拽上传图片">
+                    <input type="file" id="fileInput" class="file-input" accept="image/jpeg,image/png,image/webp" />
+
+                    <div class="dropzone-empty" id="dropzoneEmpty">
+                        <div class="dz-icon" aria-hidden="true">
+                            <svg viewBox="0 0 56 56" fill="none">
+                                <rect x="6" y="12" width="44" height="34" rx="3" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+                                <path d="M6 38 L18 28 L28 36 L36 26 L50 40" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="40" cy="22" r="3" stroke="currentColor" stroke-width="1.5"/>
+                                <path d="M28 4 L28 12 M24 8 L32 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <p class="dz-title">把图片拖到这里</p>
+                        <p class="dz-sub">或<button class="dz-link" id="browseLink" type="button">点击选择文件</button>，支持 JPG / PNG / WebP</p>
+                        <div class="dz-features">
+                            <span class="dz-feat"><i class="dot"></i> 4K 细节重建</span>
+                            <span class="dz-feat"><i class="dot"></i> 智能色彩重构</span>
+                            <span class="dz-feat"><i class="dot"></i> 一键风格迁移</span>
+                        </div>
+                    </div>
+
+                    <div class="dropzone-preview" id="dropzonePreview" hidden>
+                        <div class="dzp-frame">
+                            <img id="previewImg" alt="预览图" />
+                        </div>
+                        <button class="dzp-clear" id="removeBtn" type="button" aria-label="移除">
+                            <svg viewBox="0 0 16 16" fill="none">
+                                <path d="M4 4 L12 12 M12 4 L4 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                            </svg>
+                        </button>
+                        <div class="dzp-meta">
+                            <span class="dzp-name" id="dzpName">image.png</span>
+                            <span class="dzp-size" id="dzpSize">2.4 MB</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右：AI 能力亮点 -->
+            <div class="stage stage-highlight">
+                <div class="hl-header">
+                    <span class="hl-eyebrow">AI POWERED</span>
+                    <h3 class="hl-title">3 秒完成专业级修图</h3>
+                    <p class="hl-desc">上传后进入 AI 编辑器，用自然语言描述需求，实时生成可继续迭代的结果。</p>
+                </div>
+
+                <div class="hl-feature-list">
+                    <div class="hl-feature">
+                        <div class="hl-feature-icon hl-icon-1">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2 L14 8 L20 8 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 L10 8 Z"/>
+                            </svg>
+                        </div>
+                        <div class="hl-feature-body">
+                            <div class="hl-feature-name">智能画质增强</div>
+                            <div class="hl-feature-sub">一键提升清晰度、对比度与细节</div>
+                        </div>
+                    </div>
+
+                    <div class="hl-feature">
+                        <div class="hl-feature-icon hl-icon-2">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="9"/>
+                                <path d="M12 3v18M3 12h18"/>
+                                <path d="M5 5l14 14M19 5L5 19" opacity="0.5"/>
+                            </svg>
+                        </div>
+                        <div class="hl-feature-body">
+                            <div class="hl-feature-name">AI 对话式修改</div>
+                            <div class="hl-feature-sub">自然语言描述，AI 理解并执行</div>
+                        </div>
+                    </div>
+
+                    <div class="hl-feature">
+                        <div class="hl-feature-icon hl-icon-3">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+                                <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+                                <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+                                <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+                            </svg>
+                        </div>
+                        <div class="hl-feature-body">
+                            <div class="hl-feature-name">多版本历史</div>
+                            <div class="hl-feature-sub">每次修改自动保存，随时回溯对比</div>
+                        </div>
+                    </div>
+
+                    <div class="hl-feature">
+                        <div class="hl-feature-icon hl-icon-4">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            </svg>
+                        </div>
+                        <div class="hl-feature-body">
+                            <div class="hl-feature-name">本地加密上传</div>
+                            <div class="hl-feature-sub">图片仅用于本次处理，不存储不泄露</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hl-cta-row">
+                    <div class="hl-stat">
+                        <span class="hl-stat-num">3.2M+</span>
+                        <span class="hl-stat-label">已处理图片</span>
+                    </div>
+                    <div class="hl-stat">
+                        <span class="hl-stat-num">2.4s</span>
+                        <span class="hl-stat-label">平均耗时</span>
+                    </div>
+                    <div class="hl-stat">
+                        <span class="hl-stat-num">4K</span>
+                        <span class="hl-stat-label">最高输出</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 首页历史记录 -->
+        <section class="home-history" data-reveal="200" id="homeHistory">
+            <div class="home-history-header">
+                <div class="home-history-title-row">
+                    <div class="home-history-icon">
+                        <svg viewBox="0 0 20 20" fill="none">
+                            <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.4"/>
+                            <path d="M10 6 L10 10 L13 12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <span class="home-history-title">编辑历史</span>
+                        <span class="home-history-sub">从上传到当前版本</span>
+                    </div>
+                </div>
+                <span class="home-history-badge" id="homeHistoryBadge">0 条记录</span>
+            </div>
+            <div class="home-history-list" id="homeHistoryList">
+                <div class="home-history-empty">
+                    <svg viewBox="0 0 40 40" fill="none">
+                        <circle cx="20" cy="20" r="16" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
+                        <path d="M20 12v8l5 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>
+                    </svg>
+                    <p>暂无编辑记录</p>
+                    <span>上传图片并生成结果后，历史记录会自动保存到这里</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 底部信任条 -->
+        <section class="trust" data-reveal="200">
+            <div class="trust-item">
+                <svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+                <span class="trust-label">本地加密处理</span>
+            </div>
+            <div class="trust-divider"></div>
+            <div class="trust-item">
+                <svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                </svg>
+                <span class="trust-label">3 秒极速出图</span>
+            </div>
+            <div class="trust-divider"></div>
+            <div class="trust-item">
+                <svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                    <path d="M3 9h18M9 21V9"/>
+                </svg>
+                <span class="trust-label">PC / 移动端全适配</span>
+            </div>
+            <div class="trust-divider"></div>
+            <div class="trust-item">
+                <svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12a9 9 0 0 1-9 9m9-9a9 9 0 0 0-9-9m9 9H3m9 9a9 9 0 0 1-9-9m9 9c1.66 0 3-4.03 3-9s-1.34-9-3-9m0 18c-1.66 0-3-4.03-3-9s1.34-9 3-9"/>
+                </svg>
+                <span class="trust-label">部署后全球可访问</span>
+            </div>
+        </section>
+    </main>
+
+    <!-- ========== 编辑器视图（默认隐藏） ========== -->
+    <main class="editor-view" id="editorView" hidden>
+        <!-- 编辑器顶部栏 -->
+        <div class="editor-topbar">
+            <button class="back-btn" id="backBtn" type="button">
+                <svg viewBox="0 0 20 20" fill="none">
+                    <path d="M12 4 L6 10 L12 16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                返回首页
+            </button>
+            <div class="editor-title">
+                <span class="editor-badge">AI 修图工作台</span>
+                <span class="editor-feature" id="editorFeatureName">照片增强</span>
+            </div>
+            <div class="editor-actions">
+                <button class="editor-action-btn" id="editorHelpBtn" type="button">
+                    <svg viewBox="0 0 20 20" fill="none">
+                        <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.4"/>
+                        <path d="M8 8a2 2 0 1 1 2.5 1.94c-.5.2-.7.5-.7 1.06v.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                        <circle cx="9.8" cy="14" r="0.7" fill="currentColor"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- 三栏布局 -->
+        <div class="editor-grid">
+            <!-- 左栏：输入素材 -->
+            <div class="editor-col input-col">
+                <div class="col-header-row">
+                    <span class="col-badge">当前输入图</span>
+                </div>
+                <div class="col-title">输入素材</div>
+                <div class="input-preview-wrap">
+                    <div class="input-preview" id="inputPreview">
+                        <img id="editorOriginalImg" alt="输入素材" />
+                    </div>
+                </div>
+                <button class="reupload-btn" id="reuploadBtn" type="button">
+                    <svg viewBox="0 0 16 16" fill="none">
+                        <path d="M3 8a5 5 0 0 1 8.5-3.5L13 6 M13 3 L13 6 L10 6 M13 8a5 5 0 0 1-8.5 3.5L3 10 M3 13 L3 10 L6 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    重新上传
+                </button>
+            </div>
+
+            <!-- 中栏：主结果预览 -->
+            <div class="editor-col result-col">
+                <div class="col-header-row">
+                    <span class="col-badge">生成结果</span>
+                </div>
+                <div class="col-title">主结果预览</div>
+                <div class="result-preview-wrap" id="resultPreviewWrap">
+                    <div class="result-empty" id="resultEmpty">
+                        <div class="result-empty-icon">
+                            <svg viewBox="0 0 48 48" fill="none">
+                                <rect x="6" y="10" width="36" height="28" rx="3" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
+                                <circle cx="18" cy="22" r="4" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
+                                <path d="M6 34 L16 26 L24 32 L32 24 L42 34" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.3"/>
+                            </svg>
+                        </div>
+                        <p class="result-empty-title">生成结果将在这里展示</p>
+                        <p class="result-empty-sub">上传图片并描述需求后，即可查看 AI 处理结果</p>
+                    </div>
+                    <img id="editorResultImg" alt="AI 生成结果" hidden />
+                    <div class="result-loading" id="resultLoading" hidden>
+                        <div class="rl-spinner"></div>
+                        <p class="rl-text">AI 正在处理中…</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右栏：控制面板 -->
+            <div class="editor-col control-col">
+                <div class="col-header-row">
+                    <span class="col-badge">控制面板</span>
+                </div>
+                <div class="col-title">描述你想怎么修改图片</div>
+                <div class="control-body">
+                    <div class="prompt-box">
+                        <textarea id="promptInput" placeholder="例如：把背景换成干净的白色摄影棚，主体保持不变" rows="4"></textarea>
+                    </div>
+                    <div class="constraints">
+                        <div class="constraints-header">
+                            <span class="constraints-label">常用约束</span>
+                            <span class="constraints-hint">点击使用，可替换修改</span>
+                        </div>
+                        <div class="constraint-tags" id="constraintTags">
+                            <button class="c-tag" type="button" data-prompt="保持主体不变">保持主体不变</button>
+                            <button class="c-tag" type="button" data-prompt="自然光影">自然光影</button>
+                            <button class="c-tag" type="button" data-prompt="保留文字">保留文字</button>
+                            <button class="c-tag" type="button" data-prompt="不改变元素">不改变元素</button>
+                            <button class="c-tag" type="button" data-prompt="画质更清晰">画质更清晰</button>
+                            <button class="c-tag" type="button" data-prompt="画面更干净">画面更干净</button>
+                        </div>
+                    </div>
+                    <button class="generate-btn" id="generateBtn" type="button">
+                        <span class="generate-content">
+                            <svg viewBox="0 0 20 20" fill="none">
+                                <path d="M10 2 L12 7 L17 8 L13.5 11.5 L14.5 17 L10 14 L5.5 17 L6.5 11.5 L3 8 L8 7 Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+                            </svg>
+                            生成结果
+                        </span>
+                        <span class="generate-loader">
+                            <span class="generate-spinner"></span>
+                            <span>AI 处理中…</span>
+                        </span>
+                    </button>
+                    <p class="generate-hint">生成任务会在服务端处理，完成后自动保存到历史记录</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 编辑历史 -->
+        <section class="history-section" id="historySection">
+            <div class="history-header">
+                <div class="history-icon">
+                    <svg viewBox="0 0 20 20" fill="none">
+                        <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.4"/>
+                        <path d="M10 6 L10 10 L13 12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="history-title-wrap">
+                    <span class="history-title">编辑历史</span>
+                    <span class="history-sub">从上传到当前版本</span>
+                </div>
+            </div>
+            <div class="history-list" id="historyList">
+                <!-- 动态插入 -->
+            </div>
+        </section>
+    </main>
+
+    <!-- 底部信息 -->
+    <footer class="footer" id="pageFooter">
+        <span>© 2026 Aperture Lab</span>
+        <span class="footer-sep">·</span>
+        <span>由 AI 驱动 · 每一像素皆有意义</span>
+    </footer>
+
+    <!-- 使用说明模态 -->
+    <div class="modal-overlay" id="modalOverlay" hidden></div>
+    <div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-head">
+            <div>
+                <p class="modal-eyebrow">QUICK START</p>
+                <h3 class="modal-title" id="modalTitle">3 步完成修图</h3>
+            </div>
+            <button class="modal-close" id="modalClose" type="button" aria-label="关闭">
+                <svg viewBox="0 0 20 20" fill="none">
+                    <path d="M5 5 L15 15 M15 5 L5 15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                </svg>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-step">
+                <div class="ms-no">1</div>
+                <div class="ms-content">
+                    <h4>上传原图</h4>
+                    <p>点击或拖拽图片至上传区，支持 JPG / PNG / WebP 格式，单张不超过 10MB。</p>
+                </div>
+            </div>
+            <div class="modal-step">
+                <div class="ms-no">2</div>
+                <div class="ms-content">
+                    <h4>描述修改需求</h4>
+                    <p>在控制面板中输入你想如何修改图片，也可以点击常用约束标签快速描述。</p>
+                </div>
+            </div>
+            <div class="modal-step">
+                <div class="ms-no">3</div>
+                <div class="ms-content">
+                    <h4>查看结果与历史</h4>
+                    <p>点击「生成结果」等待 AI 处理，结果会显示在中间预览区，每次修改都会自动保存到历史记录。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 常驻 AI 对话模块 -->
+    <aside class="ai-chat collapsed" id="aiChat">
+        <div class="ai-chat-header">
+            <div class="ai-chat-title">
+                <span class="ai-chat-dot"></span>
+                AI 助手
+            </div>
+            <button class="ai-chat-toggle" id="chatToggle" type="button" aria-label="折叠对话">
+                <svg viewBox="0 0 20 20" fill="none">
+                    <path d="M5 8 L10 13 L15 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+        <div class="ai-chat-body" id="chatBody">
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-msg bot">
+                    <div class="chat-msg-avatar">AI</div>
+                    <div class="chat-msg-bubble">你好！我是 AI 修图助手。告诉我你想修什么类型的图，我帮你推荐最合适的风格。</div>
+                </div>
+            </div>
+            <div class="chat-quick" id="chatQuick">
+                <button class="chat-quick-btn" data-quick="日常照片发灰怎么办？" type="button">日常照片发灰</button>
+                <button class="chat-quick-btn" data-quick="老照片模糊怎么修复？" type="button">老照片修复</button>
+                <button class="chat-quick-btn" data-quick="证件照换底色" type="button">证件照换底</button>
+                <button class="chat-quick-btn" data-quick="商品图提亮" type="button">商品图提亮</button>
+            </div>
+            <div class="chat-input-wrap">
+                <input type="text" class="chat-input" id="chatInput" placeholder="输入你的需求…" />
+                <button class="chat-send" id="chatSend" type="button" aria-label="发送">
+                    <svg viewBox="0 0 20 20" fill="none">
+                        <path d="M3 10 L17 10 M11 4 L17 10 L11 16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- 全局加载蒙层 -->
+    <div class="global-overlay" id="globalOverlay" hidden></div>
+
+    <!-- Toast -->
+    <div class="toast-stack" id="toastStack" aria-live="polite"></div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
